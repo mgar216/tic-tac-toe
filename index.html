@@ -3,4 +3,46 @@
 <script src="scripts/index.js" defer></script>
 <link href='styles/styles.css' rel="stylesheet">
 </head>
+<body>
+<div id='select' class='start'>
+    <div id='blackout'>
+        <div id='playerselect'>
+            <p id='welcome'>Welcome to <em><b>Tic-Tac-Toe!</b></em></p>
+            <p id='playercount'>How many players will there be?</p>
+            <div id='playerbuttons'>
+                <button id='p1' class='pselect'>One Player</button>
+                <button id='p2' class='pselect'>Two Players</button>
+            </div>
+        </div>
+        <div id='playername' class='fullhidden'>
+            <p>Player Name Selector!</p>
+            <label> P1's Name ( X ):
+                <input id='p1name' name='player' type='text'/>
+            </label>
+            <label> P2's Name ( O ):
+                <input id='p2name' name='player' type='text'/>
+            </label>
+            <div id='fButtons'>
+                <button id='submit' class='submit'>Submit</button>
+                <button id='back' class='submit'>Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id='board' class='hidden'>
+    <div id='turninfo'>
+    </div>
+    <div id='squares'>
+        <div id='topleft' class='square'></div>
+        <div id='top' class='square'></div>
+        <div id='topright' class='square'></div>
+        <div id='centerleft' class='square'></div>
+        <div id='center' class='square'></div>
+        <div id='centerright' class='square'></div>
+        <div id='bottomleft' class='square'></div>
+        <div id='bottomcenter' class='square'></div>
+        <div id='bottomright' class='square'></div>
+    </div>
+</div>
+</body>
 </html>
