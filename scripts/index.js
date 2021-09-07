@@ -37,7 +37,11 @@ const gameboard = (() => {
     }
 
     action.back = () => {
-
+        let topWindow = document.getElementById('playerselect')
+        topWindow.classList.remove('fullhidden')
+        topWindow.style.zIndex = 3
+        let playerName = document.getElementById('playername')
+        playerName.classList.add('fullhidden')
     }
 
     action.chooseOnePlayer = () => {
@@ -207,6 +211,11 @@ const gameboard = (() => {
 let submit = document.getElementById('submit')
 submit.addEventListener('click', () => {
     gameboard.action.submit()
+})
+
+let back = document.getElementById('back')
+back.addEventListener('click', () => {
+    gameboard.action.back()
 })
 
 var p2 = document.getElementById('p2')
