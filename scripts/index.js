@@ -32,8 +32,6 @@ const gameboard = (() => {
                 currentPlayer.textContent = playerTwoTurn
             }
             submit.classList.add('fullhidden')
-
-            // Set Turninfo to the value of current player using privFunc
         }
     }
 
@@ -60,12 +58,15 @@ const gameboard = (() => {
         return stamp
     }
 
-
-    action.test = () => {
-        console.log(currentTurn)
-        console.log(playerOne)
-        console.log(playerTwo)
-        console.log(allSquares)
+    action.verifyFinalState = () => {
+        if (getGameStatus() == 0){
+            currentPlayer.textContent = 'Game Over! This Game is a Tie!'
+        } else if (getGameStatus() == 1){
+            currentPlayer.textContent = 'Game Over! Player 1 Wins!'
+        } else if (getGameStatus() == 2){
+            currentPlayer.textContent = 'Game Over! Player 2 Wins!'
+        }
+        return getGameStatus()
     }
 
     //private
@@ -75,10 +76,61 @@ const gameboard = (() => {
     }
     */
     const checkWin = () => {
+        const threeInRow = (a, b, c) => {
+            if (a && b && c){
+                if (a == b && a == c && b == c){
+                    if (a == 'X'){
+                        return 1
+                    } else if (a == 'O'){
+                        return 2
+                    } else {
+                        return false
+                    }
+                }
+            }
+        }
+
+        let topleft = document.getElementById('topleft').textContent
+        let top = document.getElementById('top').textContent
+        let topright = document.getElementById('topright').textContent
+        let centerleft = document.getElementById('centerleft').textContent
+        let center = document.getElementById('center').textContent
+        let centerright = document.getElementById('centerright').textContent
+        let bottomleft = document.getElementById('bottomleft').textContent
+        let bottom = document.getElementById('bottom').textContent
+        let bottomright = document.getElementById('bottomright').textContent
+
+        if (threeInRow(topleft, center, bottomright)){
+            return threeInRow(topleft, center, bottomright)
+        } else if (threeInRow(top, center, bottom)){
+            return threeInRow(top, center, bottom)
+        } else if (threeInRow(topright, center, bottomleft)){
+            return threeInRow(topright, center, bottomleft)
+        } else if (threeInRow(centerleft, center, centerright)){
+            return threeInRow(centerleft, center, centerright)
+        }
+        return -1
     }
 
     const checkDraw = () => {
+        let allSquares = document.querySelectorAll('.square')
+        let gameover = true
+        allSquares.forEach((e) => {
+            if (!e.textContent){
+                gameover = false
+            }
+        })
+        return gameover
+    }
 
+    const getGameStatus = () => {
+        if(checkDraw()){
+            return 0
+        } else if (checkWin()){
+            return checkWin()
+        } else {
+            return -1
+        }
     }
 
     const randomStart = () => {
@@ -86,15 +138,12 @@ const gameboard = (() => {
     }
 
     const setNextPlayerTurnInfo = () => {
+        if(checkDraw()) { currentPlayer.textContent = 'Tie!' }
         if (currentTurn == 0){
             currentPlayer.textContent = playerOneTurn
         } else if (currentTurn == 1){
             currentPlayer.textContent = playerTwoTurn
         }
-    }
-
-    const getPlayerInt = () => {
-        return currentTurn
     }
 
     const getCurrentPlayerSymbol = () => {
@@ -113,6 +162,20 @@ const gameboard = (() => {
         }
     }
 
+    // Currently Unused0
+    const cleanGameboard = () => {
+        let allSquares = document.querySelectorAll('.square')
+        allSquares.forEach((e) => {
+            if (e.target.textContent == 'X'){
+                e.target.classList.remove('stampX')
+            } else if (e.target.textContent == 'O'){
+                e.target.classList.remove('stampO')
+            }
+            e.target.textContent = ''
+        })
+        currentTurn = randomStart()
+        setNextPlayerTurnInfo()
+    }
 
     return {
         action
@@ -120,13 +183,12 @@ const gameboard = (() => {
 })();
 
 
-////
+//// Global
 
 
 let submit = document.getElementById('submit')
 submit.addEventListener('click', () => {
     gameboard.action.submit()
-    gameboard.action.test()
 })
 
 var p2 = document.getElementById('p2')
@@ -137,14 +199,16 @@ p2.addEventListener('click', () => {
 let allSquares = document.querySelectorAll('.square')
 allSquares.forEach(square => {
     square.addEventListener('click', (e) => {
-        if (submit.classList.contains('fullhidden') && !e.target.textContent){
-            e.target.textContent = gameboard.action.playTurn()
-            if (e.target.textContent == 'X'){
-                e.target.classList.add('stampX')
-            } else if (e.target.textContent == 'O'){
-                e.target.classList.add('stampO')
+        if(gameboard.action.verifyFinalState() < 0){
+            if (submit.classList.contains('fullhidden') && !e.target.textContent){
+                e.target.textContent = gameboard.action.playTurn()
+                if (e.target.textContent == 'X'){
+                    e.target.classList.add('stampX')
+                } else if (e.target.textContent == 'O'){
+                    e.target.classList.add('stampO')
+                }
             }
-        }
+            gameboard.action.verifyFinalState()
+        }    
     })
 })
-
