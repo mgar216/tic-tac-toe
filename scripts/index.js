@@ -62,9 +62,9 @@ const gameboard = (() => {
         if (getGameStatus() == 0){
             currentPlayer.textContent = 'Game Over! This Game is a Tie!'
         } else if (getGameStatus() == 1){
-            currentPlayer.textContent = 'Game Over! Player 1 Wins!'
+            currentPlayer.textContent = `Game Over! ${playerOne} Wins!`
         } else if (getGameStatus() == 2){
-            currentPlayer.textContent = 'Game Over! Player 2 Wins!'
+            currentPlayer.textContent = `Game Over! ${playerTwo} Wins!`
         }
         return getGameStatus()
     }
