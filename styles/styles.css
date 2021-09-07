@@ -177,6 +177,40 @@ input {
     user-select: none;
 }
 
+#newgame {
+    display: flex;
+    flex-direction: row;
+    gap: 5vh;
+}
+
+#restart {
+    height: 5vh;
+    width: 25vh;
+    margin: 2vh 0 2vh 0;
+    border-style:dashed;
+    z-index: 2;
+}
+
+#restart:hover {
+    color: white;
+    background-color: red;
+    border-width: 3px;
+}
+
+#new {
+    height: 5vh;
+    width: 25vh;
+    margin: 2vh 0 2vh 0;
+    border-style:dashed;
+    z-index: 2;
+}
+
+#new:hover {
+    color: white;
+    background-color: red;
+    border-width: 3px;
+}
+
 #squares {
     height: 80%;
     width: 90%;

@@ -2,6 +2,7 @@ const gameboard = (() => {
     // Private Vars
     let currentTurn = -1;
     let currentPlayer = document.getElementById('turninfo')
+    let newgame = document.getElementById('newgame')
     var playerOneTurn = ''
     var playerTwoTurn = ''
     var playerOne = ''
@@ -61,12 +62,19 @@ const gameboard = (() => {
     action.verifyFinalState = () => {
         if (getGameStatus() == 0){
             currentPlayer.textContent = 'Game Over! This Game is a Tie!'
+            newgame.classList.remove('fullhidden')
         } else if (getGameStatus() == 1){
             currentPlayer.textContent = `Game Over! ${playerOne} Wins!`
+            newgame.classList.remove('fullhidden')
         } else if (getGameStatus() == 2){
             currentPlayer.textContent = `Game Over! ${playerTwo} Wins!`
+            newgame.classList.remove('fullhidden')
         }
         return getGameStatus()
+    }
+
+    action.restart = () => {
+        cleanGameboard()
     }
 
     //private
@@ -108,6 +116,14 @@ const gameboard = (() => {
             return threeInRow(topright, center, bottomleft)
         } else if (threeInRow(centerleft, center, centerright)){
             return threeInRow(centerleft, center, centerright)
+        } else if (threeInRow(topleft, centerleft, bottomleft)){
+            return threeInRow(topleft, centerleft, bottomleft)
+        } else if (threeInRow(topright, centerright, bottomright)){
+            return threeInRow(topright, centerright, bottomright)
+        } else if (threeInRow(topright, top, topleft)){
+            return threeInRow(topright, top, topleft)
+        } else if (threeInRow(bottomleft, bottom, bottomright)){
+            return threeInRow(bottomleft, bottom, bottomright)
         }
         return -1
     }
@@ -162,19 +178,21 @@ const gameboard = (() => {
         }
     }
 
-    // Currently Unused0
+    // Currently Unused
     const cleanGameboard = () => {
         let allSquares = document.querySelectorAll('.square')
         allSquares.forEach((e) => {
-            if (e.target.textContent == 'X'){
-                e.target.classList.remove('stampX')
-            } else if (e.target.textContent == 'O'){
-                e.target.classList.remove('stampO')
+            console.log(e)
+            if (e.textContent == 'X'){
+                e.classList.remove('stampX')
+            } else if (e.textContent == 'O'){
+                e.classList.remove('stampO')
             }
-            e.target.textContent = ''
+            e.textContent = ''
         })
         currentTurn = randomStart()
         setNextPlayerTurnInfo()
+        newgame.classList.add('fullhidden')
     }
 
     return {
@@ -196,6 +214,18 @@ p2.addEventListener('click', () => {
     gameboard.action.chooseTwoPlayers()
 })
 
+var restart = document.getElementById('restart')
+restart.addEventListener('click', () => {
+    if (gameboard.action.verifyFinalState() >= 0){
+        gameboard.action.restart()
+    }
+})
+
+var newgame = document.getElementById('new')
+newgame.addEventListener('click', () => {
+    location.reload()
+})
+
 let allSquares = document.querySelectorAll('.square')
 allSquares.forEach(square => {
     square.addEventListener('click', (e) => {
@@ -209,6 +239,6 @@ allSquares.forEach(square => {
                 }
             }
             gameboard.action.verifyFinalState()
-        }    
+        }
     })
 })
